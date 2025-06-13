@@ -1,4 +1,9 @@
 ---
-
 name: modules
 version: master
+
+asciidoc:
+  attributes:
+    lab_name: "helpful-commands"
+    release-version: master
+    page-pagination: true

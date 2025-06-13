@@ -1,0 +1,42 @@
+Some files are large enough that it is not practical to display their
+contents with `+cat+`. A common example is log files, which are often
+packed full of information.
+
+Since `+tail+` only displays the last ten lines of a file, it is
+particularly useful for viewing recent entries in log files. Take a look
+at the final ten lines of the _audit_ log.
+
+[source,bash]
+----
+tail /var/log/audit/audit.log
+----
+
+If you wish to then see the entire file, a text viewer like `+less+` or
+`+view+` will show the entire file.
+
+Adding the `+-f+` option will follow the log file so that you can see
+new entries. Follow the system log for any new entries.
+
+[source,bash]
+----
+tail -f /var/log/messages
+----
+
+Enter Ctrl-c to break out of this stream.
+
+The `+logger+` utility will make entries to the system log from provided
+input. From the terminal, write to this log:
+
+[source,bash]
+----
+logger Hello World
+----
+
+Check that this message was recorded.
+
+[source,bash]
+----
+tail /var/log/messages
+----
+
+The message you just sent with `+logger+` is present in _messages_.
