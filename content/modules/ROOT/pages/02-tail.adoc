@@ -1,42 +1,85 @@
+=== Viewing the end of log files with 'tail'
+
 Some files are large enough that it is not practical to display their
 contents with `+cat+`. A common example is log files, which are often
 packed full of information.
 
 Since `+tail+` only displays the last ten lines of a file, it is
 particularly useful for viewing recent entries in log files. Take a look
-at the final ten lines of the _audit_ log.
+at the final ten lines of the _boot_ log.
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 tail /var/log/audit/audit.log
+----
+
+.Output
+[source,text]
+----
+type=SERVICE_START msg=audit(1718709479.839:3949): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=BPF msg=audit(1718709485.013:3950): prog-id=154 op=LOAD
+type=SERVICE_START msg=audit(1718709485.167:3951): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nm-cloud-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=SERVICE_STOP msg=audit(1718709485.167:3952): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nm-cloud-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=BPF msg=audit(1718709485.174:3953): prog-id=0 op=UNLOAD
+type=SERVICE_STOP msg=audit(1718709509.874:3954): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=BPF msg=audit(1718709509.900:3955): prog-id=0 op=UNLOAD
+type=BPF msg=audit(1718709509.900:3956): prog-id=0 op=UNLOAD
 ----
 
 If you wish to then see the entire file, a text viewer like `+less+` or
 `+view+` will show the entire file.
 
 Adding the `+-f+` option will follow the log file so that you can see
-new entries. Follow the system log for any new entries.
+new entries.
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 tail -f /var/log/messages
 ----
 
-Enter Ctrl-c to break out of this stream.
+.Output
+[source,text]
+----
+<< OUTPUT ABRIDGED >>
+Jun 18 11:23:05 localhost systemd[30108]: Finished Cleanup of User's Temporary Files and Directories.
+Jun 18 11:23:05 localhost systemd[1]: systemd-tmpfiles-clean.service: Deactivated successfully.
+Jun 18 11:23:05 localhost systemd[1]: Finished Cleanup of Temporary Directories.
+Jun 18 11:23:05 localhost systemd[30111]: Finished Cleanup of User's Temporary Files and Directories.
+Jun 18 11:23:05 localhost systemd[1]: run-credentials-systemd\x2dtmpfiles\x2dclean.service.mount: Deactivated successfully.
+----
 
-The `+logger+` utility will make entries to the system log from provided
-input. From the terminal, write to this log:
+Enter kbd:[CTRL+C] to break out of this stream.
 
-[source,bash]
+The `logger` utility will write to this _messages_ log.
+
+Execute the command below to add an entry to /var/log/messages. You will verify it is present directly after.
+
+.Command
+[source,bash,role=execute]
 ----
 logger Hello World
 ----
 
-Check that this message was recorded.
+This command has no expected output.
 
-[source,bash]
+Confirm the message was recorded in `+var/log/messages+`.
+
+.Command
+[source,bash,role=execute]
 ----
 tail /var/log/messages
+----
+
+.Output
+[source,text]
+----
+Jun 18 11:23:05 localhost systemd[1]: Finished Automatically configure NetworkManager in cloud.
+Jun 18 11:29:05 localhost systemd[1]: Starting Automatically configure NetworkManager in cloud...
+Jun 18 11:29:05 localhost systemd[1]: nm-cloud-setup.service: Deactivated successfully.
+Jun 18 11:29:05 localhost systemd[1]: Finished Automatically configure NetworkManager in cloud.
+Jun 18 11:34:27 localhost root[30360]: Hello World
 ----
 
 The message you just sent with `+logger+` is present in _messages_.

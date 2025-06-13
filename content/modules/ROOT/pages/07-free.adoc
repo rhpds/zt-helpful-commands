@@ -1,29 +1,59 @@
+=== Using 'free' to view information about the system memory usage
+
 Processes require memory to run, so when the system is running low on
 free memory it can slow down significantly. The `+free+` command is
 useful for quickly getting a summary of memory usage.
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 free -h
 ----
 
 The `+-h+` option outputs the information in a human-readable format.
 
+.Output
+[source,text]
+----
+      total  used   free   shared  buff/cache  available
+Mem:  3.5Gi  954Mi  889Mi  11Mi    2.0Gi       2.6Gi
+Swap: 0B     0B     0B
+----
+
 Let’s launch `+top+` again but this time we’ll run it in the background
 by adding a `+&+`.
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 top &
+----
+
+.Output
+[source,text]
+----
+[1] 31588
 ----
 
 If the available memory is very low, the fourth column of `+ps au+` can
 be used for finding which processes are the culprits. To sort the output
 by memory usage, add the `+--sort=-%mem+` option:
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 ps au --sort=-%mem
+----
+
+.Output
+[source,text]
+----
+<< OUTPUT ABRIDGED >>
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root        1353  0.0  0.0   5612  1792 ttyS0    Ss+  15:27   0:00 /sbin/agetty -o -p -- \u --keep-baud 115200,57600,38400,9600 - vt220
+root        1352  0.0  0.0   3044  1536 tty1     Ss+  15:27   0:00 /sbin/agetty -o -p -- \u --noclear - linux
+
+[3]+  Stopped                 top
 ----
 
 Suppose you no longer needed `+top+` and wanted to free up the resources
@@ -33,35 +63,33 @@ to use the `+kill+` command. The process ID shown in the `+ps+` output
 is how you refer to the process when killing it. Kill the `+top+`
 process from this terminal:
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
-kill -9 $(pidof top)
+kill $(pidof top)
+----
+
+This command has no expected output.
+
+Verify top is not running with `+ps au+` again.
+
+.Command
+[source,bash,role=execute]
+----
+ps au --sort=-%mem
 ----
 
 Here’s what you should see in the terminal.
 
-[source,bash]
+.Output
+[source,text]
 ----
-root@rhel:~# ps -au
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         820  0.0  0.0  13656  1716 tty1     Ss+  18:33   0:00 /sbin/agetty -o -p -- \u --nocl
-root         821  0.0  0.0  16224  2060 ttyS0    Ss+  18:33   0:00 /sbin/agetty -o -p -- \u --keep
-root        2533  0.0  0.1  26112  3760 pts/0    Ss   18:48   0:00 /bin/bash
-root        2696  0.0  0.1  51632  3812 pts/0    T    18:52   0:00 top
-root        2698  0.0  0.1  58728  3944 pts/0    R+   18:53   0:00 ps -au
-root@rhel:~# kill -9 2696
-root@rhel:~# ps -au
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         820  0.0  0.0  13656  1716 tty1     Ss+  18:33   0:00 /sbin/agetty -o -p -- \u --nocl
-root         821  0.0  0.0  16224  2060 ttyS0    Ss+  18:33   0:00 /sbin/agetty -o -p -- \u --keep
-root        2533  0.0  0.1  26112  3760 pts/0    Ss   18:48   0:00 /bin/bash
-root        2699  0.0  0.1  58728  3920 pts/0    R+   18:53   0:00 ps -au
-[1]+  Killed                  top
+<< OUTPUT ABRIDGED >>
+root       34546  0.0  0.0   9988  3456 pts/2    T    18:37   0:00 top
 ----
 
-This does not show any output, but you can see that `+top+` is no longer
-running.
+You can see that `+top+` is no longer running as the resources are `0.0`.
 
 If you want more exercises on this topic, more information on process
 management can be found in the
-https://lab.redhat.com/service-admin[Service Admin Basics lab].
+https://lab.redhat.com/service-admin[Service Admin Basics lab^].

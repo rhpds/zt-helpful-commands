@@ -5,26 +5,21 @@ antora:
   modules:
     - name: "01-cat"
       label: "Cat"
-      solveButton: true
     - name: "02-tail"
       label: "Tail"
-      solveButton: true
     - name: "03-find"
       label: "Find"
-      solveButton: true
     - name: "04-grep"
       label: "Grep"
-      solveButton: true
     - name: "05-df"
       label: "Df"
-      solveButton: true
     - name: "06-ps"
       label: "Ps"
-      solveButton: true
     - name: "07-free"
       label: "Free"
-      solveButton: true
 
 tabs:
-  - name: ">_ terminal"
+  - name: ">_ root"
     url: /wetty
+    secondary_name: ">_ rhel"
+    secondary_url: /wetty

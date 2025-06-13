@@ -1,3 +1,5 @@
+=== Locating Files
+
 Manipulating files is only useful if you can locate the file you need.
 This step will walk you through two commands that are useful for this,
 `+locate+` and `+find+`.
@@ -7,9 +9,17 @@ specified criteria. This step will show an example using the filename,
 but you can also use it to look for files with certain permissions,
 empty files, or much more.
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 find / -name messages
+----
+
+.Output
+[source,text]
+----
+/var/log/messages
+/usr/lib/python3.9/site-packages/babel/messages
 ----
 
 The output is the full path to the file. If there are multiple matches,
@@ -17,11 +27,9 @@ then this output would have multiple lines and it would be up to the
 user to decide which is the appropriate file. Instead of having to
 search through countless directories, you can quickly locate the file.
 
-____
-_Note:_ An in-depth explanation of using `+find+` to sort by file
+NOTE: An in-depth explanation of using `+find+` to sort by file
 permissions is included in the
-https://lab.redhat.com/file-permissions[File Permissions Basics lab].
-____
+https://lab.redhat.com/file-permissions[File Permissions Basics lab^].
 
 `+find+` can be input/output intensive, which can sap system resources,
 especially if you run a search that will scan a large amount of
@@ -31,9 +39,19 @@ directory. It will check every single file on the entire system to see
 if it is a match. The `+locate+` command instead queries a database to
 avoid being too I/O intensive.
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 locate messages
+----
+
+.Output
+[source,text]
+----
+<< OUTPUT ABRIDGED >>
+/usr/share/vim/vim80/syntax/messages.vim
+/usr/share/vim/vim80/syntax/msmessages.vim
+/var/log/messages
 ----
 
 This command finds a variety of files containing _messages_ in their
@@ -43,44 +61,49 @@ search process is updated once per day by default, so that means if you
 are trying to locate a newly created file it will not be present in the
 database.
 
-____
-[!NOTE] `+locate+` returns matches based on partial matches to
-_messages_ where `+find+` returned exact matches. To have `+find+`
-return the same set of partial matches, you can add the `+*+` glob
-character to on either side of the filename you are looking for. For
-example, `+find / -name *messages*+` should return the same list as
-`+locate messages+`. For more information on available patterns for
-either tool, you can refer to their man pages.
-____
-
 Create a new file with `+touch+`:
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 touch newFile
 ----
 
+This command has no expected output.
+
 Try to find this newly created file using `+locate+`:
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 locate newFile
 ----
 
 There will be no output, as _newFile_ is not in the `+locate+` database.
-Update the `+locate+` database using the `+updatedb+` command:
 
-[source,bash]
+Update the `+locate+` database again using the `+updatedb+` command:
+
+.Command
+[source,bash,role=execute]
 ----
 updatedb
 ----
 
+This command has no expected output.
+
 Re-run the `+locate+` command to look through the newly updated
 database:
 
-[source,bash]
+.Command
+[source,bash,role=execute]
 ----
 locate newFile
+----
+
+.Output
+[source,text]
+----
+/root/newFile
 ----
 
 Now the file is present. This is important to keep in mind so that you
