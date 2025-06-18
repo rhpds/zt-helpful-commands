@@ -20,15 +20,13 @@ df -h
 ----
 Filesystem      Size  Used Avail Use% Mounted on
 devtmpfs        4.0M     0  4.0M   0% /dev
-tmpfs           1.8G   84K  1.8G   1% /dev/shm
-tmpfs           723M   11M  712M   2% /run
-/dev/nvme0n1p4   50G  2.9G   47G   6% /
-/dev/nvme0n1p3  495M  153M  342M  31% /boot
-/dev/nvme0n1p2  200M  8.0K  200M   1% /boot/efi
-tmpfs           362M     0  362M   0% /run/user/1000
-tmpfs           362M  160K  362M   1% /run/user/1888
-tmpfs           362M     0  362M   0% /run/user/0
-tmpfs           362M     0  362M   0% /run/user/1001
+tmpfs           819M     0  819M   0% /dev/shm
+tmpfs           328M  5.9M  322M   2% /run
+/dev/vda4        37G  2.1G   35G   6% /
+/dev/vda3       960M  174M  787M  19% /boot
+/dev/vda2       200M  7.1M  193M   4% /efi
+tmpfs           164M     0  164M   0% /run/user/1001
+tmpfs           164M     0  164M   0% /run/user/0
 ----
 
 The usage percentage (_Use%_) column is a great place to start. If any
