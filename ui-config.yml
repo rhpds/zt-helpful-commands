@@ -20,6 +20,4 @@ antora:
 
 tabs:
   - name: ">_ root"
-    url: /wetty
-    secondary_name: ">_ rhel"
-    secondary_url: /wetty
+    url: /wetty/ssh/root
