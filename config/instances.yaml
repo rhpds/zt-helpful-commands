@@ -6,9 +6,6 @@ virtualmachines:
     memory: "2G"
     cores: 1
     image_size: "40G"
-    packages:
-      - vim-enhanced
-      - plocate
     tags:
       - key: "AnsibleGroup"
         value: "bastions"
