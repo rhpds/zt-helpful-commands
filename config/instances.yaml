@@ -8,7 +8,7 @@ virtualmachines:
     image_size: "40G"
     packages:
       - vim-enhanced
-      - mlocate
+      - plocate
     tags:
       - key: "AnsibleGroup"
         value: "bastions"
