@@ -7,10 +7,10 @@ echo "Just thinking about everything I have been through, and how huge it all fe
 echo "The fact that it is just a small part of something larger" >> /root/quote.txt
 
 # update locate db
-updatedb
+#updatedb
 
 # inject a message into messages
-logger -s "Hello World"
+#logger -s "Hello World"
 
-systemctl start mlocate-updatedb.timer
-systemctl enable mlocate-updatedb.timer
+#systemctl start mlocate-updatedb.timer
+#systemctl enable mlocate-updatedb.timer
