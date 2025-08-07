@@ -4,34 +4,34 @@ Some files are large enough that it is not practical to display their
 contents with `+cat+`. A common example is log files, which are often
 packed full of information.
 
-Since `+tail+` only displays the last ten lines of a file, it is
-particularly useful for viewing recent entries in log files. Take a look
-at the final ten lines of the _boot_ log.
+Since `+tail+` only displays the last lines of a file, it is
+particularly useful for viewing recent entries in log files. By default,
+tail shows the last ten lines of a file, but we can control how many 
+lines are displayed by using the `-n` option. You may also see this in
+examples as a dash followed directly by the number of lines, eg `-5`.
+
+Let's take a look at the last two lines of the _audit_ log. Your output
+may not exactly match the example below depending on system activity.
 
 .Command
 [source,bash,role=execute]
 ----
-tail /var/log/audit/audit.log
+tail -n 2 /var/log/audit/audit.log
 ----
 
 .Output
 [source,text]
 ----
-type=SERVICE_START msg=audit(1718709479.839:3949): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
-type=BPF msg=audit(1718709485.013:3950): prog-id=154 op=LOAD
-type=SERVICE_START msg=audit(1718709485.167:3951): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nm-cloud-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
-type=SERVICE_STOP msg=audit(1718709485.167:3952): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=nm-cloud-setup comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
-type=BPF msg=audit(1718709485.174:3953): prog-id=0 op=UNLOAD
-type=SERVICE_STOP msg=audit(1718709509.874:3954): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
-type=BPF msg=audit(1718709509.900:3955): prog-id=0 op=UNLOAD
-type=BPF msg=audit(1718709509.900:3956): prog-id=0 op=UNLOAD
+type=USER_END msg=audit(1754594818.300:8391): pid=10757 uid=0 auid=1000 ses=5 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/libexec/openssh/sshd-session" hostname=? addr=10.131.8.15 terminal=ssh res=success'UID="root" AUID="rhel" ID="rhel"
+type=USER_LOGOUT msg=audit(1754594818.300:8392): pid=10757 uid=0 auid=1000 ses=5 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/libexec/openssh/sshd-session" hostname=? addr=10.131.8.15 terminal=ssh res=success'UID="root" AUID="rhel" ID="rhel"
 ----
 
 If you wish to then see the entire file, a text viewer like `+less+` or
 `+view+` will show the entire file.
 
 Adding the `+-f+` option will follow the log file so that you can see
-new entries.
+new entries as they occur. There are a number of useful options for `tail` you can 
+find using `man tail`.
 
 .Command
 [source,bash,role=execute]

@@ -19,34 +19,40 @@ df -h
 [source,text]
 ----
 Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda3        38G  3.5G   35G  10% /
 devtmpfs        4.0M     0  4.0M   0% /dev
-tmpfs           819M     0  819M   0% /dev/shm
-tmpfs           328M  5.9M  322M   2% /run
-/dev/vda4        37G  2.1G   35G   6% /
-/dev/vda3       960M  174M  787M  19% /boot
-/dev/vda2       200M  7.1M  193M   4% /efi
-tmpfs           164M     0  164M   0% /run/user/1001
-tmpfs           164M     0  164M   0% /run/user/0
+tmpfs           903M     0  903M   0% /dev/shm
+efivarfs        256K   20K  232K   8% /sys/firmware/efi/efivars
+tmpfs           361M   13M  349M   4% /run
+tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+/dev/vda2       200M  8.4M  192M   5% /boot/efi
+tmpfs           1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs           1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+tmpfs           181M  4.0K  181M   1% /run/user/1000
+tmpfs           181M  4.0K  181M   1% /run/user/0
 ----
 
-The usage percentage (_Use%_) column is a great place to start. If any
-filesystem is close to capacity, then it may be unable to perform
+The usage percentage (_Use%_) column is a great place to start troubleshooting. 
+If any filesystem is close to capacity, then it may be unable to perform
 installations or other operations that require data to be written.
+
 However, the absolute size of the partition will determine what "`close
 to capacity`" means. In the case of this system, the root partition is
-47 GiB. Therefore, even if it is at 80% usage, the filesystem will still
-have ~9 GiB to work with. Probably something you need to address
+38 GiB. Therefore, even if it is at 80% usage, the filesystem will still
+have ~7.5 GiB to work with. Probably something you need to address
 eventually, but unless you are doing some storage-intensive operation
 that is failing, likely not the cause of immediate issues.
 
 The _boot_ partition is on the other end of the spectrum, with a size of
-only 495 MiB. Therefore, if this filesystem is at 80% usage, there will
-only be 99 MiB available. That may not be enough for basic operations
+only 200 MiB. Therefore, if this filesystem is at 80% usage, there will
+only be 40 MiB available. That may not be enough for basic operations
 such as installing system updates. Therefore, it is very concerning if
 you run `+df+` and discover one of the smaller filesystems is at 80%
 usage.
 
-NOTE: The _tmpfs_ entries are filesystems accessible by the machine
-that are stored in RAM. This means that you don’t have to care as much
-about these filesystems when troubleshooting using `+df+`. A reboot will
-give you a fresh copy of these filesystems.
+IMPORTANT: The _tmpfs_ entries are filesystems accessible by the machine
+that are stored in a shared block of RAM. This means filling these filesystems can have 
+a very different impact on system performance, up to causing a deadlock.
+By default, _tmpfs_ entries are only created for runtime system directories
+that aren't expected to store large amounts of data and are destroyed and 
+recreated at every boot.
