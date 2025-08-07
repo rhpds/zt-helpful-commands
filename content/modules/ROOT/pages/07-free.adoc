@@ -50,15 +50,10 @@ ps au --sort=-%mem
 [source,text]
 ----
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root      183769  0.0  1.1  39456 21136 pts/0    SL   20:13   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root      183774 44.7  0.7 563752 13136 pts/0    R    20:13   0:52 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root      183775 44.7  0.7 563752 13136 pts/0    R    20:13   0:52 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root       23972  0.0  0.2   7600  5120 pts/0    Ss   19:18   0:00 -bash
-root      188286  0.0  0.2   6628  3704 pts/0    R+   20:15   0:00 ps au --sort=-%mem
-root      183771  0.0  0.1  39460  2056 pts/0    S    20:13   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root      183772  0.0  0.1  39460  2056 pts/0    S    20:13   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root        1221  0.0  0.1   5024  1856 ttyS0    Ss+  19:11   0:00 /sbin/agetty -o -- \u --noreset --noclear --keep-baud 115200,57600,3
-root        1219  0.0  0.1   4980  1848 tty1     Ss+  19:11   0:00 /sbin/agetty -o -- \u --noreset --noclear - linux
+root       35115 45.3 28.4 563752 526124 pts/0   R    20:39   0:05 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       35116 45.4 28.4 563752 526124 pts/0   R    20:39   0:05 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       35112  0.0  1.1  39456 21428 pts/0    SL   20:39   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+<< OUTPUT ABRIDGED >>
 ----
 
 You can see the different worker processes that `stress-ng` has created
