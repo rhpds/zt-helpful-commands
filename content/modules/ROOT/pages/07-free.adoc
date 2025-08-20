@@ -1,8 +1,23 @@
 === Using 'free' to view information about the system memory usage
 
 Processes require memory to run, so when the system is running low on
-free memory it can slow down significantly. The `+free+` command is
-useful for quickly getting a summary of memory usage.
+free memory it can slow down significantly. Let’s launch `+stress-ng+`
+to create some memory pressure and look at ways to explore what's using RAM.
+
+.Command
+[source,bash,role=execute]
+----
+stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q &
+----
+
+.Output
+[source,text]
+----
+[1] 66948
+----
+
+
+The `+free+` command is useful for quickly getting a summary of memory usage.
 
 .Command
 [source,bash,role=execute]
@@ -15,26 +30,12 @@ The `+-h+` option outputs the information in a human-readable format.
 .Output
 [source,text]
 ----
-      total  used   free   shared  buff/cache  available
-Mem:  1.6Gi  428Mi  497Mi  5.0Mi    898Mi       1.2Gi
-Swap: 0B     0B     0B
+               total        used        free      shared  buff/cache   available
+Mem:           1.8Gi       1.5Gi       274Mi        28Mi       144Mi       259Mi
+Swap:             0B          0B          0B
 ----
 
-Let’s launch `+top+` again but this time we’ll run it in the background
-by adding a `+&+`.
-
-.Command
-[source,bash,role=execute]
-----
-top &
-----
-
-.Output
-[source,text]
-----
-[1] 66948
-----
-
+You can see that nearly all of the available RAM is currently being used.
 If the available memory is very low, the fourth column of `+ps au+` can
 be used for finding which processes are the culprits. To sort the output
 by memory usage, add the `+--sort=-%mem+` option:
@@ -48,25 +49,25 @@ ps au --sort=-%mem
 .Output
 [source,text]
 ----
-<< OUTPUT ABRIDGED >>
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root        1353  0.0  0.0   5612  1792 ttyS0    Ss+  15:27   0:00 /sbin/agetty -o -p -- \u --keep-baud 115200,57600,38400,9600 - vt220
-root        1352  0.0  0.0   3044  1536 tty1     Ss+  15:27   0:00 /sbin/agetty -o -p -- \u --noclear - linux
-
-[3]+  Stopped                 top
+root       35115 45.3 28.4 563752 526124 pts/0   R    20:39   0:05 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       35116 45.4 28.4 563752 526124 pts/0   R    20:39   0:05 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       35112  0.0  1.1  39456 21428 pts/0    SL   20:39   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+<< OUTPUT ABRIDGED >>
 ----
 
-Suppose you no longer needed `+top+` and wanted to free up the resources
-being used by this process. One option would be to return to terminal
+You can see the different worker processes that `stress-ng` has created
+taking up memory under the _%MEM_ column. Once you've found the problem
+process, you can now terminate it. One option would be to return to terminal
 that it is running in and quit it. However, it is simpler in most cases
 to use the `+kill+` command. The process ID shown in the `+ps+` output
-is how you refer to the process when killing it. Kill the `+top+`
+is how you refer to the process when killing it. Kill the `+stress-ng+`
 process from this terminal:
 
 .Command
 [source,bash,role=execute]
 ----
-kill $(pidof top)
+kill $(pidof stress-ng)
 ----
 
 This command has no expected output.
@@ -84,11 +85,17 @@ Here’s what you should see in the terminal.
 .Output
 [source,text]
 ----
-<< OUTPUT ABRIDGED >>
-root       66948  0.0  0.0   9988  3456 pts/2    T    18:37   0:00 top
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root       23972  0.0  0.2   7600  5120 pts/0    Ss   19:18   0:00 -bash
+root      189060  0.0  0.2   6628  3804 pts/0    R+   20:15   0:00 ps au --sort=-%mem
+root        1221  0.0  0.1   5024  1856 ttyS0    Ss+  19:11   0:00 /sbin/agetty -o -- \u --noreset --noclear --keep-baud 115200,57600,3
+root        1219  0.0  0.1   4980  1848 tty1     Ss+  19:11   0:00 /sbin/agetty -o -- \u --noreset --noclear - linux
+[1]+  Done                    stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
 ----
 
-You can see that `+top+` is no longer running as the resources are `0.0`.
+Notice `stress-ng` is no longer in the `ps` output. You also see the `Done` 
+message from the job control system indicating the termination of a
+background process.
 
 If you want more exercises on this topic, more information on process
 management can be found in the

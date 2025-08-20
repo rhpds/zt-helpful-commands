@@ -19,7 +19,6 @@ find / -name messages
 [source,text]
 ----
 /var/log/messages
-/usr/lib/python3.9/site-packages/babel/messages
 ----
 
 The output is the full path to the file. If there are multiple matches,
@@ -48,9 +47,10 @@ locate messages
 .Output
 [source,text]
 ----
-<< OUTPUT ABRIDGED >>
-/usr/share/vim/vim80/syntax/messages.vim
-/usr/share/vim/vim80/syntax/msmessages.vim
+/usr/share/makedumpfile/eppic_scripts/ap_messages_3_10_to_4_8.c
+/usr/share/vim/vim91/ftplugin/msmessages.vim
+/usr/share/vim/vim91/syntax/messages.vim
+/usr/share/vim/vim91/syntax/msmessages.vim
 /var/log/messages
 ----
 
