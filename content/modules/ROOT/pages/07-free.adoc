@@ -31,11 +31,11 @@ The `+-h+` option outputs the information in a human-readable format.
 [source,text]
 ----
                total        used        free      shared  buff/cache   available
-Mem:           1.8Gi       1.5Gi       274Mi        28Mi       144Mi       259Mi
+Mem:           3.3Gi       1.8Gi       1.3Gi        33Mi       484Mi       1.5Gi
 Swap:             0B          0B          0B
 ----
 
-You can see that nearly all of the available RAM is currently being used.
+You can see that over half of the available RAM is currently being used.
 If the available memory is very low, the fourth column of `+ps au+` can
 be used for finding which processes are the culprits. To sort the output
 by memory usage, add the `+--sort=-%mem+` option:
@@ -50,9 +50,9 @@ ps au --sort=-%mem
 [source,text]
 ----
 USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root       35115 45.3 28.4 563752 526124 pts/0   R    20:39   0:05 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root       35116 45.4 28.4 563752 526124 pts/0   R    20:39   0:05 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
-root       35112  0.0  1.1  39456 21428 pts/0    SL   20:39   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       29223 45.7 17.2 629292 591732 pts/0   R    14:51   0:10 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       29224 45.7 17.2 629292 591732 pts/0   R    14:51   0:10 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
+root       29220  0.0  0.6  39456 21296 pts/0    SL   14:51   0:00 stress-ng --vm 2 --vm-bytes 1G --timeout 600s -q
 << OUTPUT ABRIDGED >>
 ----
 
