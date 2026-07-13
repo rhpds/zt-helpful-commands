@@ -3,8 +3,9 @@
 # create notes file and populate with some text
 
 # Unregister and register the VM
+dnf -y remove katello-ca-consumer-*
 subscription-manager clean
-subscription-manager register --activationkey=12-5-22-instruqt --org=12451665 --force
+subscription-manager register --activationkey=$ACTIVATION_KEY --org=$ORG_ID --force
 
 touch /root/quote.txt
 echo "Just thinking about everything I have been through, and how huge it all feels." >> /root/quote.txt
